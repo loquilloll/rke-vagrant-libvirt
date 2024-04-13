@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bgp-config
+  namespace: kube-system
+data:
+  config.yaml: |
+    peers:
+    - peer-address: 192.168.50.2
+      peer-asn: 65551
+      my-asn: 64513
+    address-pools:
+    - name: default
+      protocol: bgp
+      addresses:
+      - 10.25.0.10-10.25.3.250    

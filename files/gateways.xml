@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<gateways>
+  <gateway_item>
+    <interface>opt2</interface>
+    <gateway>dynamic</gateway>
+    <name>VAGRANT_DHCP</name>
+    <priority>254</priority>
+    <weight>1</weight>
+    <ipprotocol>inet</ipprotocol>
+    <interval/>
+    <descr>Interface VAGRANT_DHCP Gateway</descr>
+    <monitor_disable>1</monitor_disable>
+    <disabled>1</disabled>
+  </gateway_item>
+  <gateway_item>
+    <interface>opt1</interface>
+    <gateway>192.168.1.1</gateway>
+    <name>Public</name>
+    <priority>255</priority>
+    <weight>1</weight>
+    <ipprotocol>inet</ipprotocol>
+    <interval/>
+    <descr/>
+    <monitor_disable>1</monitor_disable>
+  </gateway_item>
+</gateways>

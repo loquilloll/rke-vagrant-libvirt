@@ -1,0 +1,37 @@
+---
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: rke2-cilium
+  namespace: kube-system
+spec:
+  valuesContent: |-
+    kubeProxyReplacement: true
+    k8sServiceHost: cp01.c1.k8s.work
+    k8sServicePort: 6443
+    hubble:
+      enabled: true
+      relay:
+        enabled: true
+      ui:
+        enabled: true
+    devices: eth+
+    # externalIPs:
+    #   enabled: true
+    # l2announcements:
+    #   enabled: true
+    # ingressController:
+    #   enabled: true
+    #   loadbalancerMode: dedicated
+    # bgp:
+    #   enabled: true
+    #   announce:
+    #     loadbalancerIP: true
+    bgpControlPlane:
+      enabled: true
+    gatewayAPI:
+      enabled: true
+    apiVersions:
+     - gateway.networking.k8s.io/v1beta1/GatewayClass
+    ipam:
+      mode: "kubernetes"

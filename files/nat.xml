@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<nat>
+  <outbound>
+    <mode>advanced</mode>
+    <rule>
+      <source>
+        <network>any</network>
+      </source>
+      <destination>
+        <any>1</any>
+      </destination>
+      <descr/>
+      <category/>
+      <interface>opt1</interface>
+      <tag/>
+      <tagged/>
+      <poolopts/>
+      <poolopts_sourcehashkey/>
+      <ipprotocol>inet</ipprotocol>
+      <created>
+        <username>vagrant@192.168.1.199</username>
+        <time>1707055055.6424</time>
+        <description>/firewall_nat_out_edit.php made changes</description>
+      </created>
+      <target/>
+      <targetip_subnet>0</targetip_subnet>
+      <sourceport/>
+      <updated>
+        <username>vagrant@192.168.1.199</username>
+        <time>1707055217.1381</time>
+        <description>/firewall_nat_out_edit.php made changes</description>
+      </updated>
+    </rule>
+  </outbound>
+</nat>

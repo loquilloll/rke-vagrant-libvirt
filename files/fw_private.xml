@@ -1,0 +1,24 @@
+    <rule uuid="ec7bac37-01da-4a1a-95ba-645b2ff2ed48">
+      <type>pass</type>
+      <interface>opt3</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <direction>in</direction>
+      <quick>1</quick>
+      <source>
+        <any>1</any>
+      </source>
+      <destination>
+        <any>1</any>
+      </destination>
+      <updated>
+        <username>vagrant@192.168.121.1</username>
+        <time>1706382625.0558</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>vagrant@192.168.121.1</username>
+        <time>1706382625.0558</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>

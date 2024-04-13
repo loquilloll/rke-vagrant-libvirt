@@ -1,0 +1,8 @@
+    <opt1>
+      <if>vtnet2</if>
+      <descr>Public</descr>
+      <enable>1</enable>
+      <spoofmac/>
+      <ipaddr>192.168.1.146</ipaddr>
+      <subnet>24</subnet>
+    </opt1>

@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+  <unbound>
+    <enable>1</enable>
+    <dnssec>1</dnssec>
+    <regdhcp>1</regdhcp>
+    <regdhcpstatic>1</regdhcpstatic>
+  </unbound>
