@@ -1,0 +1,20 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: traefik
+  namespace: kube-system
+spec:
+  chart: traefik
+  repo: https://traefik.github.io/charts
+  targetNamespace: kube-system
+  # set:
+  #   adminPassword: "NotVerySafePassword"
+  # valuesContent: |-
+  #   image:
+  #     tag: master
+  #   env:
+  #     GF_EXPLORE_ENABLED: true
+  #   adminUser: admin
+  #   sidecar:
+  #     datasources:
+  #       enabled: true

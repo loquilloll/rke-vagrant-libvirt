@@ -1,0 +1,27 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: gitea
+  namespace: kube-system
+spec:
+  chart: gitea
+  repo: https://dl.gitea.com/charts/
+  targetNamespace: default
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gitea
+  namespace: default
+spec:
+  ingressClassName: cilium
+  rules:
+  - http:
+      paths:
+      - backend:
+          service:
+            name: gitea-http
+            port:
+              number: 80
+        path: /
+        pathType: Prefix

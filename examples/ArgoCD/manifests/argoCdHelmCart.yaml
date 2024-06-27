@@ -1,0 +1,32 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: argocd
+  namespace: kube-system
+spec:
+  chart: argo-cd
+  repo: https://argoproj.github.io/argo-helm
+  targetNamespace: argocd
+  createNamespace: true
+  valuesContent: |-
+    configs:
+      params:
+        server.insecure: true
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: argocd
+  namespace: argocd
+spec:
+  ingressClassName: cilium
+  rules:
+  - http:
+      paths:
+      - backend:
+          service:
+            name: argocd-server
+            port:
+              number: 80
+        path: /
+        pathType: Prefix

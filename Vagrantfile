@@ -6,7 +6,7 @@ VAGRANTFILE_API_VERSION = "2"
 Vagrant.require_version ">= 1.7.2"
 
 CONFIG = {
-  "box" =>	            ENV['box'] || "generic/ubuntu2304",
+  "box" =>	            ENV['box'] || "generic/ubuntu2204",
   "domain" =>               ENV['CLUSTER_DOMAIN'] || "c1.k8s.work",
   "network_name" =>         ENV['CLUSTER_NETWORK'] || "c1",
   "network_cidr" =>         ENV['CLUSTER_CIDR'] || "192.168.201.0/24",
@@ -16,7 +16,7 @@ CONFIG = {
   "cp_memory"  =>           ENV['CP_MEMORY'] || "16384",
   "cp_disk" =>              ENV['CP_DISK'] || "100", 
   "cp_mac" =>               ENV['CP_MAC'] || ":02",
-  "num_worker_nodes" =>     ENV['NUM_WORKER'] || "1",
+  "num_worker_nodes" =>     ENV['NUM_WORKER'] || "3",
   "worker_cores" =>         ENV['WORKER_CORES'] || "8",
   "worker_memory"  =>       ENV['WORKER_MEMORY'] || "16384",
   "worker_disk" =>          ENV['WORKER_DISK'] || "100", 
@@ -25,6 +25,11 @@ CONFIG = {
 
 
 fix_dns = <<-TEXT
+  # until [ -f /home/vagrant/files/netplan_eth1.yaml ]
+  # do
+  #      echo "file not mounted"
+  #      sleep 1
+  # done
   sudo sed -i -e '/nameservers:/d' -e '/addresses:/d' /etc/netplan/01-netcfg.yaml
   cp /home/vagrant/files/netplan_eth1.yaml /etc/netplan/eth1.yaml
   chmod -R 600 /etc/netplan
@@ -79,8 +84,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       :libvirt__forward_mode => "none"
     node.vm.network "public_network",
       :dev => "bridge0",
-      :libvirt__mac => "52:54:30:00:01:01"
-      # :type => "bridge",
+      :mac => "52:54:30:00:01:01",
+      :type => "bridge",
+      :mode => "bridge"
       # :ip => "192.168.1.21"
     node.vm.provider :libvirt do |domain|
       domain.cpus = "#{vm_cpu}".to_i
@@ -137,7 +143,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.define vm_name do |node|
       node.vm.hostname = "#{vm_fqdn}"
       node.vm.provision "rke_files", type: "file", source: "rke_files", destination: "files"
-      node.vm.provision "fix_dns", type: "shell", name: "fix_dns", run: "once", inline: fix_dns, after: "rke_files"
       node.vm.provision "rke_c1", type: "shell", path: "rke_scripts/rke_c1.sh", after: "rke_files"
       node.vm.network "private_network",
         :ip => "192.168.50.21",
@@ -169,11 +174,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     vm_disk = CONFIG['worker_disk']
     vm_mac = "#{CONFIG['domain_mac_seed']}#{CONFIG['worker_mac']}:0#{i}"
     config.vm.define vm_name, autostart: true do |node|
-      node.vm.provision "shell", name: "fix_dns", run: "once", inline: fix_dns
       node.vm.hostname = "#{vm_fqdn}"
-      node.vm.synced_folder "files/", "/files", type: "nfs", nfs_version: 4
-      node.vm.provision "file", source: "rke_files", destination: "files"
-      # node.vm.provision "shell", path: "rke_scripts/rke_agent.sh"
+      # node.vm.synced_folder "files/", "/files", type: "nfs", nfs_version: 4
+      node.vm.provision "rke_files", type: "file", source: "rke_files", destination: "files"
+      node.vm.provision "shell", path: "rke_scripts/rke_agent.sh", after: "rke_files"
       node.vm.network "private_network",
         :ip => "192.168.50.3#{i}",
         :libvirt__mac => "52:54:30:00:03:01",

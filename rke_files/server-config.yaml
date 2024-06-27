@@ -1,0 +1,14 @@
+write-kubeconfig-mode: "0644"
+tls-san:
+  - "cp01.c1.k8s.work"
+  - "192.168.50.21"
+token: vagrant
+cni: cilium
+# kube-apiserver-arg:
+#   - "feature-gates=TopologyAwareHints=true,JobTrackingWithFinalizers=true"
+# kube-controller-manager-arg:
+#   - "feature-gates=TopologyAwareHints=true,JobTrackingWithFinalizers=true"
+disable-kube-proxy: true
+disable:
+ - rke2-kube-proxy
+ - ingress-nginx

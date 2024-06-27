@@ -29,8 +29,9 @@ spec:
     #     loadbalancerIP: true
     # bgpControlPlane:
     #   enabled: true
-    # gatewayAPI:
-    #   enabled: true
+    gatewayAPI:
+      enabled: true
+    # This was a fix that's not needed anymore
     # apiVersions:
     #  - gateway.networking.k8s.io/v1beta1/GatewayClass
     # ipam:
