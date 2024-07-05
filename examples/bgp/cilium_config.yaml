@@ -20,16 +20,15 @@ spec:
     #   enabled: true
     l2announcements:
       enabled: true
-    ingressController:
-      enabled: true
-      loadbalancerMode: dedicated
+    # ingressController:
+    #   enabled: true
+    #   loadbalancerMode: dedicated
     # bgp:
     #   enabled: true
     #   announce:
     #     loadbalancerIP: true
-    
-    # bgpControlPlane:
-    #   enabled: true
+    bgpControlPlane:
+      enabled: true
     # gatewayAPI:
     #   enabled: true
     # apiVersions:
