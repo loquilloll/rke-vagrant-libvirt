@@ -46,17 +46,15 @@ TEXT
 
 
 bootstrap = <<-TEXT
-pkg install -y os-frr
-
-# sed -i '' -e '/<\\/lo0>/r files/public.xml' /conf/config.xml
-# sed -i '' -e '/<\\/lo0>/r files/private.xml' /conf/config.xml
-# sed -i '' -e '/<filter>/r files/fw_private.xml' /conf/config.xml
-# sed -i '' -e 's/<domain>localdomain<\\/domain>/<domain>c1.k8s.work<\\/domain>/' /conf/config.xml
-# php ~/files/bgp.php quagga 'files/frr.xml'
-# php ~/files/bgp.php dhcpd 'files/dhcpd.xml'
-# php ~/files/bgp.php unbound 'files/unbound.xml'
-# # php ~/files/bgp.php nat 'files/nat.xml'
-# php ~/files/bgp.php gateways 'files/gateways.xml'
+sed -i '' -e '/<\\/lo0>/r files/public.xml' /conf/config.xml
+sed -i '' -e '/<\\/lo0>/r files/private.xml' /conf/config.xml
+sed -i '' -e '/<filter>/r files/fw_private.xml' /conf/config.xml
+sed -i '' -e 's/<domain>localdomain<\\/domain>/<domain>c1.k8s.work<\\/domain>/' /conf/config.xml
+php ~/files/bgp.php quagga 'files/frr.xml'
+php ~/files/bgp.php dhcpd 'files/dhcpd.xml'
+php ~/files/bgp.php unbound 'files/unbound.xml'
+# php ~/files/bgp.php nat 'files/nat.xml'
+php ~/files/bgp.php gateways 'files/gateways.xml'
 
 
 # Shutdown the system
@@ -72,10 +70,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define "opnsense" do |node|
     vm_cpu = CONFIG['cp_cores']
     vm_disk = CONFIG['cp_disk']
-    node.vm.box = "enrico204/opnsense"
+    node.vm.box = "loquilloll/opnsense"
     node.vm.provision "file", source: "files", destination: "files"
     node.vm.provision "shell", inline: bootstrap
-    node.vm.hostname = "opensense"
+    # node.vm.hostname = "opensense"
     node.vm.network "private_network",
       :ip => "192.168.50.2",
       :auto_config => false,
@@ -93,41 +91,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       domain.machine_virtual_size = "#{vm_disk}".to_i
       domain.management_network_mode = "nat"
       domain.management_network_mac = "52:54:00:8e:54:97"
-      # domain.management_network_name = CONFIG['network_name']
-      # domain.management_network_address = CONFIG['network_cidr']
-      domain.memory = 16384
-      domain.uri = 'qemu+unix:///system'
-    end
-  end
-# 
-  config.vm.define "opnsense2" do |node|
-    vm_cpu = CONFIG['cp_cores']
-    vm_disk = CONFIG['cp_disk']
-    # node.ssh.username = "vagrant"
-    # node.ssh.password = "vagrant"
-    node.ssh.shell = "sh"
-    node.vm.box = "loquilloll/opnsense"
-    # node.vm.provision "file", source: "files", destination: "files"
-    # node.vm.provision "shell", inline: bootstrap
-    # node.vm.hostname = "opensense"
-    node.vm.network "private_network",
-      :ip => "192.168.50.3",
-      :auto_config => false,
-      # :libvirt__network_name => "host_only",
-      :libvirt__dhcp_enabled => false,
-      :libvirt__forward_mode => "none"
-    node.vm.network "public_network",
-      :dev => "bridge0",
-      :mac => "52:54:30:03:01:01",
-      :type => "bridge",
-      :mode => "bridge"
-      # :ip => "192.168.1.21"
-    node.vm.provider :libvirt do |domain|
-      domain.cpus = "#{vm_cpu}".to_i
-      domain.driver = 'kvm'
-      domain.machine_virtual_size = "#{vm_disk}".to_i
-      domain.management_network_mode = "nat"
-      domain.management_network_mac = "52:54:03:8e:54:97"
       # domain.management_network_name = CONFIG['network_name']
       # domain.management_network_address = CONFIG['network_cidr']
       domain.memory = 16384
